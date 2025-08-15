@@ -51,7 +51,7 @@ Users not only support the cause through donations but are also motivated to sta
 
 ## New Modules Added
 
-### 🔹 Module 3 – Credit Earning (Timed & Trigger-Based)
+###  Module 3 – Credit Earning (Timed & Trigger-Based)
 - Users earn credits for:
   - Donations
   - Other configured triggers (extendable).
@@ -64,7 +64,7 @@ Users not only support the cause through donations but are also motivated to sta
 
 ---
 
-### 🔹 Module 4 – Engagement Nudge
+###  Module 4 – Engagement Nudge
 - Detects **inactive users** (days of inactivity configurable via `AppConfig` model).
 - Provides **in-app reactivation button** (Thank You Page).
 - Grants **bonus credits** on reactivation (configurable).
@@ -89,10 +89,14 @@ Users not only support the cause through donations but are also motivated to sta
 
 ## Deployment
 
-- Hosted on Vercel (or Netlify).
+- Vercel
 - Environment variables required in `.env.local`:
-  - Stripe public/secret keys
-  - App base URL
+  - NEXT_PUBLIC_BASE_URL=http://localhost:3000
+  - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  - STRIPE_SECRET_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - STRIPE_PRICE_ID
+  - MONGODB_URI
 
 ---
 
@@ -100,5 +104,5 @@ Users not only support the cause through donations but are also motivated to sta
 
 1. Clone the repo  
    ```bash
-   git clone <repo_url>
+   git clone https://github.com/sidhantgautam/Menalsomatter.git
    cd menalso-matter
