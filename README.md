@@ -100,9 +100,12 @@ Users not only support the cause through donations but are also motivated to sta
 
 ---
 
+## API Testing with Postman
+
+---
+
 ## Setup
 
-1. Clone the repo  
-   ```bash
-   git clone https://github.com/sidhantgautam/Menalsomatter.git
-   cd menalso-matter
+1. Clone the repo
+2. Add .env.local with Stripe keys
+3. Run npm install and npm run dev
