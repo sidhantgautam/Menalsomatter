@@ -13,10 +13,17 @@ export default async function handler(req, res) {
 
   let user = await User.findOne({ email });
   if (!user) {
-    user = await User.create({ email, credits: 0, status: "active" });
+    user = await User.create({
+      email,
+      credits: 0,
+      status: "active",
+      lastActive: new Date(),
+      processedSessions: [],
+      creditHistory: [],
+      notifications: [],
+      hasReactivated: false, 
+    });
   }
-
-  if (!user.notifications) user.notifications = [];
 
   const config = await AppConfig.findOne({ key: "global" });
   if (!config) {
@@ -26,6 +33,7 @@ export default async function handler(req, res) {
   const now = new Date();
   const inactivityLimit = new Date(now);
   inactivityLimit.setDate(now.getDate() - config.inactivityDays);
+
 
   if (awardAmount && !isNaN(awardAmount)) {
     if (sessionId && user.processedSessions.includes(sessionId)) {
@@ -40,22 +48,30 @@ export default async function handler(req, res) {
     }
 
     user.credits += Number(awardAmount);
-    user.creditHistory.push({ type: "award", amount: Number(awardAmount) });
+    user.creditHistory.push({
+      type: "award",
+      amount: Number(awardAmount),
+      date: now,
+    });
 
     if (sessionId) {
       user.processedSessions.push(sessionId);
     }
   }
 
+
   if (user.lastActive < inactivityLimit && user.status === "active") {
     user.status = "inactive";
+    user.hasReactivated = false; 
     user.notifications.push({
       type: "nudge",
       message: `We miss you! Reactivate now and earn +${config.reactivationBonus} bonus credits.`,
-      cta: `/api/reactivate?email=${email}`,
+      cta: "/api/reactivate",
+      seen: false,
     });
     user.lastNudge = now;
   } else {
+
     user.lastActive = now;
     if (user.status !== "inactive") {
       user.status = "active";
@@ -70,5 +86,6 @@ export default async function handler(req, res) {
     lastActive: user.lastActive,
     credits: user.credits || 0,
     notifications: user.notifications,
+    hasReactivated: user.hasReactivated,
   });
 }

@@ -1,4 +1,4 @@
-// pages/api/reactivate.js
+// pages/api/reactivate.ks
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import AppConfig from "@/models/AppConfig";
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
   inactivityLimit.setDate(now.getDate() - config.inactivityDays);
 
   if (user.status === "inactive" && user.lastActive < inactivityLimit) {
-    // Award bonus
     user.credits = (user.credits || 0) + config.reactivationBonus;
 
     user.creditHistory.push({
@@ -33,6 +32,8 @@ export default async function handler(req, res) {
 
     user.status = "active";
     user.lastActive = now;
+    user.hasReactivated = true;
+
 
     user.notifications.forEach((n) => {
       if (n.type === "nudge" && !n.seen) n.seen = true;
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
       credits: user.credits,
       status: user.status,
       lastActive: user.lastActive,
+      hasReactivated: user.hasReactivated,
     });
   }
 
@@ -53,5 +55,6 @@ export default async function handler(req, res) {
     credits: user.credits,
     status: user.status,
     lastActive: user.lastActive,
+    hasReactivated: user.hasReactivated,
   });
 }
