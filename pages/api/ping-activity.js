@@ -21,19 +21,16 @@ export default async function handler(req, res) {
       processedSessions: [],
       creditHistory: [],
       notifications: [],
-      hasReactivated: false, 
+      hasReactivated: false,
     });
   }
 
   const config = await AppConfig.findOne({ key: "global" });
-  if (!config) {
-    return res.status(500).json({ error: "App config missing" });
-  }
+  if (!config) return res.status(500).json({ error: "App config missing" });
 
   const now = new Date();
   const inactivityLimit = new Date(now);
   inactivityLimit.setDate(now.getDate() - config.inactivityDays);
-
 
   if (awardAmount && !isNaN(awardAmount)) {
     if (sessionId && user.processedSessions.includes(sessionId)) {
@@ -44,6 +41,7 @@ export default async function handler(req, res) {
         credits: user.credits,
         alreadyAwarded: true,
         notifications: user.notifications,
+        hasReactivated: user.hasReactivated,
       });
     }
 
@@ -59,10 +57,9 @@ export default async function handler(req, res) {
     }
   }
 
-
   if (user.lastActive < inactivityLimit && user.status === "active") {
     user.status = "inactive";
-    user.hasReactivated = false; 
+    user.hasReactivated = false;
     user.notifications.push({
       type: "nudge",
       message: `We miss you! Reactivate now and earn +${config.reactivationBonus} bonus credits.`,
@@ -71,7 +68,6 @@ export default async function handler(req, res) {
     });
     user.lastNudge = now;
   } else {
-
     user.lastActive = now;
     if (user.status !== "inactive") {
       user.status = "active";
@@ -89,3 +85,4 @@ export default async function handler(req, res) {
     hasReactivated: user.hasReactivated,
   });
 }
+

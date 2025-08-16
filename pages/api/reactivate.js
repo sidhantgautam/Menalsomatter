@@ -34,7 +34,6 @@ export default async function handler(req, res) {
     user.lastActive = now;
     user.hasReactivated = true;
 
-
     user.notifications.forEach((n) => {
       if (n.type === "nudge" && !n.seen) n.seen = true;
     });
