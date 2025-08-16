@@ -25,7 +25,7 @@ export default function ThankYouPage() {
           setUserEmail(data.customer_email);
         }
       })
-      .catch((err) => console.error("Error fetching session:", err));
+      .catch((err) => console.error(err));
   }, [router.isReady, router.query]);
 
   useEffect(() => {
@@ -50,14 +50,13 @@ export default function ThankYouPage() {
         if (!data.alreadyAwarded) {
           setEarnedCredits(47);
           const nearestThreshold = Math.ceil(data.credits / 100) * 100;
-          const gapToPrize = nearestThreshold - data.credits;
-          setGap(gapToPrize);
+          setGap(nearestThreshold - data.credits);
           setShowPopup(true);
         } else {
           router.replace("/");
         }
       } catch (err) {
-        console.error("Error awarding credits:", err);
+        console.error(err);
       }
     }
 
@@ -97,7 +96,7 @@ export default function ThankYouPage() {
         }, 5000);
       }
     } catch (err) {
-      console.error("Reactivation failed:", err);
+      console.error(err);
     }
 
     setReactivating(false);

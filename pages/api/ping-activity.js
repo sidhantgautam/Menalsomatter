@@ -1,4 +1,4 @@
-//pages/api/ping-active.js
+//pages/api/ping-activity.js
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import AppConfig from "@/models/AppConfig";

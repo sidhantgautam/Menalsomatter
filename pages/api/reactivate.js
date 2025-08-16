@@ -1,4 +1,4 @@
-// pages/api/reactivate.ks
+// pages/api/reactivate.js
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import AppConfig from "@/models/AppConfig";
@@ -18,12 +18,9 @@ export default async function handler(req, res) {
   if (!config) return res.status(500).json({ error: "App config missing" });
 
   const now = new Date();
-  const inactivityLimit = new Date(now);
-  inactivityLimit.setDate(now.getDate() - config.inactivityDays);
 
-  if (user.status === "inactive" && user.lastActive < inactivityLimit) {
+  if (user.status === "inactive") {
     user.credits = (user.credits || 0) + config.reactivationBonus;
-
     user.creditHistory.push({
       type: "reactivation_bonus",
       amount: config.reactivationBonus,
