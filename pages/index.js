@@ -27,12 +27,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans:wght@400&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
+      <Head />
       <div
         className="min-h-screen bg-[#f1f5f9] text-gray-900 px-6 py-12 flex flex-col items-center"
         style={{ fontFamily: "'Open Sans', sans-serif" }}

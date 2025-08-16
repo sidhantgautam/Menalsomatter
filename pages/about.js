@@ -7,10 +7,6 @@ export default function About() {
     <>
       <Head>
         <title>Learn More | MenAlsoMatter</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans:wght@400&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <div
         className="min-h-screen flex flex-col items-center justify-center bg-[#f1f5f9] px-4"
